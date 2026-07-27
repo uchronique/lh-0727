@@ -4,4 +4,5 @@ import streamlit as st
 st.title('Hello, there!')
 
 # 텍스트 출력
-st.write('Have a wonderful day!')
+st.write('Have a wonderful day! See you next Wed')
+
