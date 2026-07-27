@@ -6,8 +6,8 @@ st.title("두 숫자 더하기 앱")
 st.write("두 개의 숫자를 입력하면 그 합을 계산해 드립니다.")
 
 # 숫자 입력 받기
-number1 = st.number_input("첫 번째 숫자를 입력하세요:", value=0.0)
-number2 = st.number_input("두 번째 숫자를 입력하세요:", value=0.0)
+number1 = st.number_input("첫 번째 숫자를 입력하세요:", value=0)
+number2 = st.number_input("두 번째 숫자를 입력하세요:", value=0)
 
 # 합 계산
 sum_numbers = number1 + number2
