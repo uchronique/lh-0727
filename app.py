@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import os
+import kagglehub # Add kagglehub for direct download
 
 st.set_page_config(layout="wide", page_title="COVID-19 대시보드")
 
@@ -11,13 +12,20 @@ st.write("이 대시보드는 COVID-19의 확진자, 사망자, 회복자, 활�
 
 @st.cache_data
 def load_data():
-    # KaggleHub 경로 사용 (이전에 다운로드된 데이터셋 경로)
-    data_path = "/kaggle/input/corona-virus-report"
-    file_name = 'full_grouped.csv'
-    file_path = os.path.join(data_path, file_name)
+    # Download the dataset directly from Kaggle
+    try:
+        # Note: For Streamlit Cloud deployment, you might need to configure Kaggle API keys
+        # as Streamlit secrets (KAGGLE_USERNAME, KAGGLE_KEY). Otherwise, this might fail.
+        path = kagglehub.dataset_download("imdevskp/corona-virus-report")
+    except Exception as e:
+        st.error(f"Kaggle dataset 다운로드 중 오류 발생: {e}. Streamlit Cloud에 배포하는 경우 Kaggle API 키를 `st.secrets`에 설정했는지 확인하세요.")
+        st.stop()
+
+    file_name = 'full_grouped.csv' # Assuming this is the main data file in the dataset
+    file_path = os.path.join(path, file_name)
     
     if not os.path.exists(file_path):
-        st.error(f"데이터 파일을 찾을 수 없습니다: {file_path}")
+        st.error(f"다운로드된 Kaggle 데이터셋에서 파일을 찾을 수 없습니다: {file_path}. 데이터셋 구조를 확인하세요.")
         st.stop()
 
     df = pd.read_csv(file_path)
@@ -49,4 +57,4 @@ fig.update_layout(hovermode='x unified')
 st.plotly_chart(fig, use_container_width=True)
 
 st.markdown("--- ")
-st.info("데이터 출처: Kaggle 'corona-virus-report'")
+st.info("데이터 출처: Kaggle 'corona-virus-report' (앱 실행 중 직접 다운로드)")
